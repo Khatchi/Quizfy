@@ -23,3 +23,10 @@ class Question(db.Model):
     text = db.Column(db.String(255), nullable=False)
     quiz_id = db.Column(db.Integer, db.ForeignKey('quiz.id'), nullable=False)
     options = db.relationship('Options', backref='question', lazy=True)
+
+class Options(db.Model):
+    'Creates Options db class'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(100), nullable=False)
+    is_correct = db.Column(db.Boolean, default=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
