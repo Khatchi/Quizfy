@@ -20,6 +20,7 @@ db.init_app(app)
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
+    'returns home page via index.html'
     return render_template('index.html')
 
 
