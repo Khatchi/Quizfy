@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ quiz.title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+    <style>
+      #hero_image{
+        background-image: url("{{ url_for("static", filename="images/hero_1.jpg") }}");
+      }
+      .question {
+          counter-increment: questionCounter; /* Increment the counter for each question */
+          margin-bottom: 20px
+          color: white;
+      }
+      .question p::before {
+          content: counter(questionCounter) ". "; /* Display the question number */
+          font-weight: bold;
+          margin-right: 10px
+          color: white;
+      }
+      label {
+          color: white;
+      }
+    </style>
+  <body>
+  <div class="site-wrap">
+    <header class="site-navbar bg-white" role="banner">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-11 col-xl-2">
+            <div class="mb-0 site-logo">
+              <a href="{{ url_for('quiz', quiz_id=quiz_id) }}" class="text-black h2 mb-0">
+                <img src="{{ url_for('static', filename='images/quizify.svg') }}" style="max-height: 150px; max-width: 150px;" alt="Quizify Logo">
+              </a>
+            </div>
+          </div>
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+              <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
+        
+              </ul>
+            </nav>
+          </div>
+          <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;">
+            <a href="#" class="site-menu-toggle js-menu-toggle text-black">
+              <span class="icon-menu h3"></span>
+            </a>
+          </div>
+
+          </div>
+
+        </div>
+      </div>
+    </header>
+    <div class="site-blocks-cover overlay" id="hero_image"
+   
+    data-aos="fade" data-stellar-background-ratio="0.5">
+      <div class="container">
+        <div class="row align-items-center justify-content-center text-center">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
+            <div class="row justify-content-center mb-4">
+              <div class="col-md-8 text-center">
+                <h1><span class="typed-words"></span></h1>
+                <p class="lead mb-5">Empowering Interactive Learning and Engagement</p>
+                <div>
+                  <h1>{{ quiz.title }} </h1>
+
+                  {% if not quiz.submitted %}
+                    <form method="POST" action="{{ url_for('quiz', quiz_id=quiz.id) }}">
+                      {% for question in quiz.questions %}
+                        <div class="question">
+                          <p>{{ question.text }}</p>
+
+                          {% for option in question.options %}
+                            <label>
+                              <input type="radio" name="question_{{ question.id }}" value="{{ option.id }}" required>
+                              {{ option.text }}
+                            </label><br>
+                          {% endfor %}
+                        </div>
+                      {% endfor %}
+                      
+                      <button type="button" class="btn btn-primary btn-md" id="nextButton">Next</button>
+                      <button type="submit" class="btn btn-primary btn-md">Submit Quiz</button>
+                    </form>
+                  {% else %}
+                    <p>Your score: {{ quiz.score }}/{{ len(quiz.questions) }}</p>
+                  {% endif %}
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <section class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-4">
+            <div class="p-3 box-with-humber">
+              <div class="number-behind">01.</div>
+              <h2>Our Values</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et praesentium eos nulla qui commodi consectetur beatae fugiat. Veniam iste rerum perferendis.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="p-3 box-with-humber">
+              <div class="number-behind">02.</div>
+              <h2>Our Mission</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et praesentium eos nulla qui commodi consectetur beatae fugiat. Veniam iste rerum perferendis.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="p-3 box-with-humber">
+              <div class="number-behind">03.</div>
+              <h2>Our Philosophy</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et praesentium eos nulla qui commodi consectetur beatae fugiat. Veniam iste rerum perferendis.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-5">
+                <h2 class="footer-heading mb-4">About Us</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque facere laudantium magnam voluptatum autem. Amet aliquid nesciunt veritatis aliquam.</p>
+              </div>
+              <div class="col-md-3 ml-auto">
+                <h2 class="footer-heading mb-4">Features</h2>
+                <ul class="list-unstyled">
+                  <li><a href="#">Feature 1</a></li>
+                  <li><a href="#">Feature 2</a></li>
+                  <li><a href="#">Feature 3</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3">
+                <h2 class="footer-heading mb-4">Follow Us</h2>
+                <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery.magnific-popup.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/typed.js') }}"></script>
+            <script>
+            var typed = new Typed('.typed-words', {
+            strings: ["Unlock the Power of Interactive Learning","Elevate Your Educational Experience"," Discover Seamless Integration"],
+            typeSpeed: 80,
+            backSpeed: 80,
+            backDelay: 4000,
+            startDelay: 1000,
+            loop: true,
+            showCursor: true
+            });
+            </script>
+  
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Initialize the current question index
+      let currentQuestionIndex = 0;
+
+      // Get all questions and hide them except the first one
+      const questions = document.querySelectorAll(".question");
+      questions.forEach((question, index) => {
+        if (index !== currentQuestionIndex) {
+          question.style.display = "none";
+        }
+      });
+
+      // Get the "Next" button
+      const nextButton = document.getElementById("nextButton");
+
+      // Add a click event listener to the "Next" button
+      nextButton.addEventListener("click", function () {
+        // Hide the current question
+        questions[currentQuestionIndex].style.display = "none";
+
+        // Increment the current question index
+        currentQuestionIndex++;
+
+        // Check if there is another question
+        if (currentQuestionIndex < questions.length) {
+          // Display the next question
+          questions[currentQuestionIndex].style.display = "block";
+        } else {
+          // If no more questions, submit the form or perform any other action
+          document.querySelector("form").submit();
+        }
+      });
+    });
+  </script>
+
+    
+  </body>
+</html>
