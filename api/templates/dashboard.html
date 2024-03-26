@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Quizify</title>
+    <title>Dashboard</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
@@ -28,7 +28,7 @@
         <div class="row align-items-center">
           <div class="col-11 col-xl-2">
             <div class="mb-0 site-logo">
-              <a href="{{ url_for('home') }}" class="text-black h2 mb-0">
+              <a href="{{ url_for('dashboard') }}" class="text-black h2 mb-0">
                 <img src="{{ url_for('static', filename='images/quizify.svg') }}" style="max-height: 150px; max-width: 150px;" alt="Quizify Logo">
               </a>
             </div>
@@ -36,8 +36,8 @@
           <div class="col-12 col-md-10 d-none d-xl-block">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li><a href="{{ url_for('login') }}" class="btn btn-primary btn-md" style="color: aliceblue;">login</a></li>
-                <li><a href="{{ url_for('register') }}" class="btn btn-primary btn-md" style="color: aliceblue;">Register</a></li>
+                <li><a href="{{ url_for('create_quiz_from_api') }}" class="btn btn-primary btn-md" style="color: aliceblue;">Create</a></li>
+                <li><a href="{{ url_for('logout') }}" class="btn btn-primary btn-md" style="color: aliceblue;">Logout</a></li>
               </ul>
             </nav>
           </div>
@@ -61,8 +61,15 @@
             <div class="row justify-content-center mb-4">
               <div class="col-md-8 text-center">
                 <h1><span class="typed-words"></span></h1>
+                <h1><span class="typed-words">Welcome to your Dashboard!</span></h1>
                 <p class="lead mb-5">Empowering Interactive Learning and Engagement</p>
-                <div><a href="#" class="btn btn-primary btn-md">Create Quiz</a></div>
+                
+                <h1><span class="typed-words">Available Quizzes:</span></h1>
+                <div>
+                    {% for quiz in quizzes %}
+                        <li><a href="{{ url_for('quiz', quiz_id=quiz.id) }}" class="btn btn-primary btn-md">Quiz {{ quiz.id }}: {{ quiz.title }}</a></li>
+                    {% endfor %}
+                </div>
               </div>
             </div>
 
