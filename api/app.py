@@ -2,11 +2,17 @@
 """
 This module handles the flask app as well as the corresponding routes
 """
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from models import db
+from models import db, User, Question, Options, Quiz
 from dotenv import load_dotenv
 import os
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import check_password_hash, Bcrypt, generate_password_hash
+import requests
+import json
 
 
 load_dotenv()
@@ -14,6 +20,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+migrate = Migrate(app, db)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+bcrypt = Bcrypt()
 
 db.init_app(app)
 
@@ -24,6 +35,33 @@ def home():
     return render_template('index.html')
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    "returns and stores new user"
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        # Checks if the username is already taken
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Email already taken. Please choose another.', 'danger')
+            return redirect(url_for('register'))
+
+        # Hashes the password before storing it in the database
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        # Creates a new user instance
+        new_user = User(email=email, password=hashed_password)
+
+        # Commits the user to the database
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Account created successfully. You can now log in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
 
 if __name__ == "__main__":
     with app.app_context():
