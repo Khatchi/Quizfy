@@ -101,6 +101,36 @@ def dashboard():
     quizzes = Quiz.query.all()
     return render_template('dashboard.html', quizzes=quizzes)
 
+
+@app.route('/quiz/<int:quiz_id>', methods=['GET', 'POST'])
+@login_required
+def quiz(quiz_id):
+    quiz = Quiz.query.get(quiz_id)
+
+    if not quiz:
+        flash('Quiz not found.', 'danger')
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'POST':
+        score = 0
+
+        for question in quiz.questions:
+            user_answer = request.form.get(f'question_{question.id}')
+            correct_option = Options.query.filter_by(question_id=question.id, is_correct=True).first()
+
+            if user_answer and user_answer == str(correct_option.id):
+                score += 1
+            
+        # Update the quiz object in the database
+        quiz.score = score
+        quiz.submitted = True
+        db.session.commit()    
+
+        flash(f'Quiz completed! Your score: {score}/{len(quiz.questions)}', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('quiz.html', quiz=quiz, quiz_id=quiz_id)
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
