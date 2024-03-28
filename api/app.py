@@ -131,6 +131,50 @@ def quiz(quiz_id):
 
     return render_template('quiz.html', quiz=quiz, quiz_id=quiz_id)
 
+
+@app.route('/create_quiz_from_api')
+@login_required
+def create_quiz_from_api():
+    # Make a request to the API to fetch quiz data
+    api_url = 'https://opentdb.com/api.php?amount=30&category=9&difficulty=medium&type=multiple'
+    response = requests.get(api_url)
+
+    if response.status_code == 200:
+        quiz_data = response.json()
+
+        # Create a new quiz instance
+        new_quiz = Quiz(title='Quiz from API')
+        db.session.add(new_quiz)
+        db.session.commit()
+
+        # Parse the API data and create questions and options
+        for result in quiz_data['results']:
+            question_text = result['question']
+            correct_option_text = result['correct_answer']
+            incorrect_options = result['incorrect_answers']
+
+            # Create a new question for the quiz
+            new_question = Question(text=question_text, quiz=new_quiz)
+            db.session.add(new_question)
+            db.session.commit()
+
+            # Create options for the question
+            correct_option = Options(text=correct_option_text, is_correct=True, question=new_question)
+            db.session.add(correct_option)
+            db.session.commit()
+
+            for incorrect_option_text in incorrect_options:
+                incorrect_option = Options(text=incorrect_option_text, is_correct=False, question=new_question)
+                db.session.add(incorrect_option)
+                db.session.commit()
+
+        flash('Quiz created successfully from API!', 'success')
+    else:
+        flash('Failed to fetch quiz data from API.', 'danger')
+
+    return redirect(url_for('dashboard'))
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
