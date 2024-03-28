@@ -85,6 +85,22 @@ def login():
 
     return render_template('login.html')
 
+
+@app.route('/logout')
+@login_required
+def logout():
+    'returns user to the home page'
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('home'))
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    'returns the dashboard template'
+    quizzes = Quiz.query.all()
+    return render_template('dashboard.html', quizzes=quizzes)
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
