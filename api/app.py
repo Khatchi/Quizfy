@@ -63,6 +63,28 @@ def register():
 
     return render_template('register.html')
 
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.query(User).get(int(user_id))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    'returns the login template'
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Login failed. Check your username and password.', 'danger')
+
+    return render_template('login.html')
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
