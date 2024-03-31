@@ -45,4 +45,12 @@ python3 -m venv venv
 pip install -r requirements.txt
 ```
 
+6. Set up the environment variables:
+. Create a .env file in the project root directory.
+. Add the following environment variables to the .env file:
+
+    SECRET_KEY=your_secret_key
+    DATABASE_URL=your_database_url
+
+
 
