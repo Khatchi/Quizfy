@@ -3,13 +3,13 @@
 Quizify is a web application designed to empower interactive learning and engagement through quizzes. It allows users to register, log in, create quizzes, and take quizzes created by other users.
 
 ## Table of Contents
-* `Installation`
-* `Usage`
-* `Features`
-* `File Structure`
-* `Technologies Used`
-* `Contributing`
-* `License`
+* [link text] (Installation)
+* [link text] (Usage)
+* [link text] (Features)
+* [link text] (File Structure)
+* [link text] (Technologies Used)
+* [link text] (Contributing)
+* [link text] (License)
 
 ## Installation
 To run Quizify locally on your machine, follow these steps:
@@ -64,7 +64,7 @@ To run the Quizify web application, follow these steps:
 ```bash
 python3 api/app.py
 ```
-3. Access the web application in your browser at `http://localhost:5000/home`
+3. Access the web application in your browser at [link text] (http://localhost:5000/home)
 
 ## Features
 - User Registration: Users can create a new account by providing their email and password.
@@ -112,3 +112,5 @@ Quizify/
 
 ## Contributing
 Contributions are welcome! If you find any bugs or have suggestions for improvement, please open an issue or submit a pull request on the GitHub repository. Thanks you!
+
+## License
