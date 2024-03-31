@@ -8,6 +8,7 @@ Quizify is a web application designed to empower interactive learning and engage
 * `Features`
 * `File Structure`
 * `Technologies Used`
+* `API Documentation`
 * `Contributing`
 * `License`
 
@@ -109,6 +110,65 @@ Quizify/
 - Python 3: Programming language
 - HTML5/CSS3: Frontend markup and styling
 - JavaScript: Frontend scripting language
+
+## API Documentation
+This section provides information about the API endpoints available in the application.
+
+1. Home Endpoint
+Route: /home
+Method: GET, POST
+Description: Returns the home page via index.html.
+Response: Renders the index.html template.
+
+2. Registration Endpoint
+Route: /register
+Method: GET, POST
+Description: Allows users to register for an account.
+Request Body: JSON object with email and password fields.
+Response:
+Success: Redirects to login page with a success flash message.
+Failure: Redirects to registration page with a danger flash message if email is already taken.
+
+3. Login Endpoint
+Route: /login
+Method: GET, POST
+Description: Allows registered users to log in to their account.
+Request Body: JSON object with email and password fields.
+Response:
+Success: Redirects to dashboard page with a success flash message.
+Failure: Redirects to login page with a danger flash message if login fails.
+
+4. Logout Endpoint
+Route: /logout
+Method: GET
+Description: Logs out the user and redirects to the home page.
+Response: Redirects to home page with an info flash message.
+
+5. Dashboard Endpoint
+Route: /dashboard
+Method: GET
+Description: Returns the dashboard page with a list of quizzes.
+Response: Renders the dashboard.html template with a list of quizzes.
+
+6. Quiz Endpoint
+Route: /quiz/<int:quiz_id>
+Method: GET, POST
+Description: Retrieves quiz questions and allows users to submit quiz answers.
+Request Parameters:
+quiz_id: ID of the quiz to retrieve.
+Response:
+Success:
+GET: Renders the quiz.html template with quiz data.
+POST: Redirects to dashboard page with a success flash message.
+Failure: Redirects to dashboard page with a danger flash message if quiz is not found.
+
+7. Create Quiz from API Endpoint
+Route: /create_quiz_from_api
+Method: GET
+Description: Fetches quiz data from an external API and creates a new quiz in the database.
+Response:
+Success: Redirects to dashboard page with a success flash message.
+Failure: Redirects to dashboard page with a danger flash message if API request fails.
 
 ## Contributing
 Contributions are welcome! If you find any bugs or have suggestions for improvement, please open an issue or submit a pull request on the GitHub repository. Thanks you!
